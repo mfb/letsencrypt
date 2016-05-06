@@ -19,7 +19,13 @@ virtualenv --no-site-packages $VENV_NAME $VENV_ARGS
 # invocations use latest
 pip install -U setuptools
 pip install -U pip
-pip install "$@"
+if [ "$CERTBOT_WEBSITE" = "True" ]
+then
+  flags="--process-dependency-links"
+else
+  flags=""
+fi
+pip install ${flags} "$@"
 
 set +x
 echo "Please run the following command to activate developer environment:"

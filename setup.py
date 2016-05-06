@@ -77,10 +77,21 @@ dev_extras = [
     'wheel',
 ]
 
+sphinx_theme = 'sphinx_rtd_theme'
+dependency_links = []
+on_certbot_website = os.environ.get('CERTBOT_WEBSITE', None) == 'True'
+# Use a custom theme on the Certbot website.
+if on_certbot_website:
+    sphinx_theme += '==master'
+    dependency_links += [
+        "git+https://github.com/EFForg/sphinx_rtd_theme.git@master#egg=sphinx_rtd_theme-master",
+    ]
+
+
 docs_extras = [
     'repoze.sphinx.autointerface',
     'Sphinx>=1.0',  # autodoc_member_order = 'bysource', autodoc_default_flags
-    'sphinx_rtd_theme',
+    sphinx_theme,
     'sphinxcontrib-programoutput',
 ]
 
@@ -120,6 +131,8 @@ setup(
         'dev': dev_extras,
         'docs': docs_extras,
     },
+
+    dependency_links=dependency_links,
 
     # to test all packages run "python setup.py test -s
     # {acme,certbot_apache,certbot_nginx}"
